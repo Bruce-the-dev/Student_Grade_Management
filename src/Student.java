@@ -5,7 +5,7 @@ public abstract class Student {
     private int age;
     private String email;
     private String phone;
-    private String status;
+    private String status="Active";
     static int studentCounter;
 
     public Student() {
