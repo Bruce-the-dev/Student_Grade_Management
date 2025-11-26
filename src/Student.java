@@ -1,6 +1,6 @@
 public abstract class Student {
     private String studentId;
-
+    private static GradeManager gradeManager;
     private String name;
     private int age;
     private String email;
@@ -14,8 +14,7 @@ public abstract class Student {
     public Student(String name, int age, String email, String phone) {
         studentCounter++;
 //        this.studentId = "STU" +studentCounter;
-        this.studentId = "STU" + String.format("%03d", studentCounter); // FIXED ID generator
-
+        this.studentId = "STU" + String.format("%03d", studentCounter);
         this.name = name;
         this.age = age;
         this.email = email;
@@ -28,13 +27,20 @@ public abstract class Student {
 
     public abstract double getPassingGrade();
 
-    double calculateAverageGrade(double avg) {
-        return avg;
+    double calculateAverageGrade() {
+        if (gradeManager != null) {
+            return gradeManager.calculateOverallAverage(this.studentId);
+        }
+        return 0.0;
+
     }
 
-    boolean isPassing(double grade) {
-       return calculateAverageGrade(grade)>= grade;
+    boolean isPassing() {
+       return false;
 }
+    public static void setGradeManager(GradeManager gm) {
+        gradeManager = gm;
+    }
 
 
     public static int getStudentCounter() {
@@ -89,8 +95,5 @@ public abstract class Student {
         return studentId;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
 
 }

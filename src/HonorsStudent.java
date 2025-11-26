@@ -10,8 +10,7 @@ private boolean honorsEligible;
 
     @Override
     public void displayStudentDetails() {
-        System.out.println("Honors Students Info");
-            System.out.println(getStudentId());
+        System.out.println("\n=== Honors Student Details ===");
             System.out.println(getName());
             System.out.println(getAge());
             System.out.println(getEmail());
@@ -19,10 +18,11 @@ private boolean honorsEligible;
             System.out.println(getStudentType());
         System.out.println(getPassingGrade());
 
+
     }
 
     public boolean checkHonorsEligibility() {
-        return calculateAverageGrade(0) >= 85;
+        return calculateAverageGrade() >= 85;
     }
 
 
