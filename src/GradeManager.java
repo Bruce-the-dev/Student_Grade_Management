@@ -3,8 +3,9 @@ public class GradeManager {
     private int gradeCount;
 
     public void addGrade(Grade grade) {
+        if (gradeCount < grades.length) {
         grades[gradeCount] = grade;
-        gradeCount++;
+        gradeCount++;}
     }
 
     public void viewGradesByStudent(String studentId) {
@@ -14,19 +15,20 @@ public class GradeManager {
             if (grades[i] != null) {
                 if (grades[i].getStudentId().equals(studentId)) {
                     found = true;
+
                     grades[i].displayGradeDetails();
-                } else {
-                    System.out.println("no grades found");
                 }
             }
         }
-        if (!found) {
-            System.out.println("No grades found for this student.");
+        if (!found) {  System.out.println("—————————————————————————————————————");
+            System.out.println("No grades recorded for this student.");
+            System.out.println("—————————————————————————————————————");
+            System.out.println();
+            System.out.println("press enter to continue.....");
         }
 
     }
 
-    //average of core subjects
     public double calculateCoreAverage(String studentId) {
         double sum = 0, count = 0;
         for (int i = 0; i < gradeCount; i++) {
@@ -42,7 +44,7 @@ public class GradeManager {
             }
         }
         if (count == 0) {
-            return 0;
+            return -1;
         }
         return sum / count;
 
@@ -55,7 +57,7 @@ public class GradeManager {
             if (grades[i] != null) {
 
                 if (grades[i].getStudentId().equals(studentId)) {
-                    if (grades[i].getSubject().getSubjectType().equals("Elective")){
+                    if (grades[i].getSubject().getSubjectType().equals("Elective")) {
                         sum += grades[i].getGrade();
                         count++;
 
@@ -64,7 +66,7 @@ public class GradeManager {
             }
         }
         if (count == 0) {
-            return 0;
+            return -1;
         }
         return sum / count;
 
@@ -72,23 +74,22 @@ public class GradeManager {
 
     //average of all grades
     public double calculateOverallAverage(String studentId) {
-        double sum=0 ;int count =0;
-        for (int i = 0; i < gradeCount; i++){
-            if(grades[i]!=null){
-                if (grades[i].getStudentId().equals(studentId)){
-                    sum+= grades[i].getGrade();
+        if (studentId != null) {
 
-                count++;}
-
-            }
+        double coreAvg= calculateCoreAverage(studentId);
+        double electiveAvg= calculateElectiveAverage(studentId);
+        return (coreAvg+ electiveAvg)/2;
+        }
+else return -1;
         }
 
-
-            if (count == 0){return 0;}
-        return sum/count;
+    public int getGradeCount(String studentId) {
+        int count = 0;
+        for (int i = 0; i < gradeCount; i++) {
+            if (grades[i] != null && grades[i].getStudentId().equals(studentId)) {
+                count++;
+            }
+        }
+        return count;
     }
-
-    public int getGradeCount() {
-        return gradeCount;
-    } //returns total grade count
 }

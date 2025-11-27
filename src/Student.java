@@ -31,12 +31,10 @@ public abstract class Student {
         if (gradeManager != null) {
             return gradeManager.calculateOverallAverage(this.studentId);
         }
-        return 0.0;
+        return 0.0;}
 
-    }
-
-    boolean isPassing() {
-       return false;
+    boolean isPassing(double avg) {
+        return avg > 50;
 }
     public static void setGradeManager(GradeManager gm) {
         gradeManager = gm;

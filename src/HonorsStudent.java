@@ -1,6 +1,6 @@
 public class HonorsStudent extends Student{
 private double passingGrade=60.0;
-private boolean honorsEligible;
+private boolean honorsEligible= true;
 
     public HonorsStudent(String name,int age,String email,String phone){
         super(name,age,email,phone);
@@ -11,12 +11,15 @@ private boolean honorsEligible;
     @Override
     public void displayStudentDetails() {
         System.out.println("\n=== Honors Student Details ===");
-            System.out.println(getName());
-            System.out.println(getAge());
-            System.out.println(getEmail());
-            System.out.println(getPhone());
-            System.out.println(getStudentType());
-        System.out.println(getPassingGrade());
+        System.out.println("\n✓ Student added successfully!");
+        System.out.println("  Student ID: " +getStudentId());
+        System.out.println("  Name: " + getName());
+        System.out.println("  Type: " + getStudentType());
+        System.out.println("  Age: "+ getAge());
+        System.out.println("  Email: "+getEmail());
+        System.out.println("  Passing grade: "+getPassingGrade());
+        System.out.println("  Honors ELegible: "+ checkHonorsEligibility());
+        System.out.println("  Status: " + getStatus());
 
 
     }
@@ -34,5 +37,13 @@ private boolean honorsEligible;
     @Override
     public double getPassingGrade() {
         return passingGrade;
+    }
+
+    public boolean isHonorsEligible() {
+        return honorsEligible;
+    }
+
+    public void setHonorsEligible(boolean honorsEligible) {
+        this.honorsEligible = honorsEligible;
     }
 }

@@ -1,4 +1,5 @@
 import java.time.Instant;
+import java.time.LocalDate;
 
 public class Grade implements Gradable {
     private static int gradeCounter;
@@ -8,7 +9,7 @@ public class Grade implements Gradable {
     private double grade;
     private String date;
 
-    public Grade(double grade, String studentId, Subject subject) {
+    public Grade( String studentId, Subject subject, double grade) {
         gradeCounter++;
         this.gradeId = "GRD" + String.format("%03d", gradeCounter);
         if (validateGrade(grade)) {
@@ -19,17 +20,18 @@ public class Grade implements Gradable {
         }
         this.studentId = studentId;
         this.subject = subject;
-        this.date = Instant.now().toString();
+        this.date = LocalDate.now().toString();
     }
 
+
+
     public void displayGradeDetails() {
-        System.out.println("\n=== Grade Report for Student: " + studentId + " ===");
-        System.out.println(getStudentId());
-        System.out.println(getGradeId());
-        System.out.println(getGrade());
-        System.out.println(getSubject().getSubjectName());
-        System.out.println(getSubject().getSubjectCode());
-        System.out.println(getSubject().getSubjectType());
+        System.out.printf("%-8s | %-12s | %-15s | %-10s | %-6.1f%%%n",
+                getGradeId(),
+                getDate(),
+                getSubject().getSubjectName(),
+                getSubject().getSubjectType(),
+                getGrade());
     }
 
     public String getLetterGrade() {

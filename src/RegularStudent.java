@@ -9,12 +9,14 @@ public class RegularStudent extends Student {
 
     @Override
     public void displayStudentDetails() {
-        System.out.println(getStudentId());
-        System.out.println(getName());
-        System.out.println(getAge());
-        System.out.println(getEmail());
-        System.out.println(getPhone());
-        System.out.println(getStudentType());
+        System.out.println("\n✓ Student added successfully!");
+        System.out.println("  Student ID: " +getStudentId());
+        System.out.println("  Name: " + getName());
+        System.out.println("  Type: " + getStudentType());
+        System.out.println("  Age: "+ getAge());
+        System.out.println("  Email: "+getEmail());
+        System.out.println("  Passing grade: "+getPassingGrade());
+        System.out.println("  Status: " + getStatus());
     }
 
     @Override
