@@ -1,7 +1,7 @@
 ---
 # 📘 Student Grade Management System Lab Assignment.
 
-A Java console application that allows teachers to manage students, subjects, and grades using OOP principles such as inheritance, abstraction, polymorphism, interfaces, and composition.
+A beginner Java console application that allows teachers to manage students, subjects, and grades using OOP principles such as inheritance, abstraction, polymorphism, interfaces, and composition.
 
 ---
 
