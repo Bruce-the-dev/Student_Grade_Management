@@ -15,7 +15,7 @@ public class Main {
         showMenu();
     }
 
-    private static void showMenu() throws StudentNotFoundException  {
+    private static void showMenu() throws StudentNotFoundException {
         boolean running = true;
 
         while (running) {
@@ -27,12 +27,13 @@ public class Main {
             System.out.println("2. View Students");
             System.out.println("3. Record Grade");
             System.out.println("4. View Grade Report");
-            System.out.println("5. Export Grade Report\n" +
-                    "6. Calculate Student GPA\n" +
-                    "7. Bulk Import Grades\n" +
-                    "8. View Class Statistics\n" +
-                    "9. Search Students\n" +
-                    "10. Exit");
+            System.out.println("""
+                    5. Export Grade Report
+                    6. Calculate Student GPA
+                    7. Bulk Import Grades
+                    8. View Class Statistics
+                    9. Search Students
+                    10. Exit""");
             System.out.println();
             System.out.print("Enter choice: ");
 
@@ -65,7 +66,7 @@ public class Main {
                     System.out.println("\n Not yet implemented view class Statistics!");
                     break;
                 case 9:
-                    System.out.println("\nNot yet implemented search students!");
+                    searchStudent();
                     break;
                 case 10:
                     System.out.println("\nExiting system. Goodbye!");
@@ -79,6 +80,61 @@ public class Main {
         scanner.close();
     }
 
+    private static void searchStudent() throws StudentNotFoundException {
+        System.out.println("""
+                Search options:
+                1. By Student ID
+                2. By Name (partial match)
+                3. By Grade Range
+                4. By Student Type
+                
+                Select option (1-4):""");
+        int choice = getIntInput();
+        switch (choice) {
+            case 1:
+                System.out.println("Enter the student's ID: ");
+                String studId = scanner.next();
+
+                try {
+                    Student s = studentManager.findStudent(studId);
+                    System.out.println("───────────────────────────────────────────────────────────────");
+                    System.out.printf("%-10s %-20s %-9s %-8s%n", "STU ID", "Name", "TYPE", "AVG");
+                    System.out.printf("%-10s %-20s %-9s %-8s%n", s.getStudentId(), s.getName(), s.getStudentType(), s.calculateAverageGrade());
+
+
+                } catch (StudentNotFoundException snf) {
+                    System.out.println("Error" + snf.getMessage());
+                    LoggerHandler.log(snf.getMessage());
+                }
+                break;
+            case 2:
+                System.out.println("Enter the Name (partial or full): ");
+                String studName = scanner.next();
+                Student[] matches = studentManager.findStudentByName(studName);
+                if (matches.length == 0) {
+                    System.out.println("\n❌ No students match that name.");
+                    LoggerHandler.log("SearchByName — No match for: " + studName);
+                } else {
+                    System.out.println("Search Results: \n");
+                    System.out.println("───────────────────────────────────────────────────────────────");
+                    System.out.printf("%-10s %-20s %-9s %-8s%n", "STU ID", "Name", "TYPE", "AVG");
+
+                    for (Student s : matches) {
+
+                    System.out.printf("%-10s %-20s %-9s %.2f%n",s.getStudentId(),s.getName(),s.getStudentType(),s.calculateAverageGrade());
+                    }
+                }
+
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                System.out.println("invalid choice");
+                break;
+        }
+    }
+
     private static void viewGradeReport() {
 
         System.out.println("\nVIEW GRADE REPORT");
@@ -88,23 +144,23 @@ public class Main {
         scanner.nextLine(); // Clear buffer
         System.out.print("Enter student ID: ");
         String studentId = scanner.nextLine();
-try{
+        try {
 
 
-        Student student = studentManager.findStudent(studentId);
-        if (student == null) {
-            System.out.println("\nError: Student not found.");
-            return;
+            Student student = studentManager.findStudent(studentId);
+            if (student == null) {
+                System.out.println("\nError: Student not found.");
+                return;
+            }
+            System.out.printf("%-8s | %-12s | %-15s | %-10s | %-6s%n",
+                    "GRD ID", "DATE", "SUBJECT", "TYPE", "GRADE");
+            System.out.println("-------------------------------------------------------------");
+            gradeManager.viewGradesByStudent(studentId);
+            System.out.println("total number of subjects: " + gradeManager.getGradeCount(studentId));
+
+        } catch (StudentNotFoundException snf) {
+            System.out.println("ERROR: " + snf.getMessage());
         }
-        System.out.printf("%-8s | %-12s | %-15s | %-10s | %-6s%n",
-                "GRD ID", "DATE", "SUBJECT", "TYPE", "GRADE");
-        System.out.println("-------------------------------------------------------------");
-        gradeManager.viewGradesByStudent(studentId);
-            System.out.println("total number of subjects: "+gradeManager.getGradeCount(studentId));
-
-    }catch (StudentNotFoundException snf){
-    System.out.println("ERROR: " + snf.getMessage());
-}
     }
 
     private static void addStudentMenu() {
@@ -208,8 +264,7 @@ try{
         System.out.printf("Average Class Grade: %.1f%%%n", studentManager.getAverageClassGrade(gradeManager));
         System.out.println();
         System.out.print("Press Enter to continue...");
-        scanner.nextLine(); // Clear buffer
-        scanner.nextLine(); // Wait for Enter
+        scanner.nextLine();
 
     }
 
@@ -221,7 +276,7 @@ try{
         addInitialGrades(alice.getStudentId(), 78.5, 5);
 
         // Student 2: Bob Smith (Honors)
-        Student bob = new HonorsStudent("Bob Smith", 21, "bob.smith@school.edu", "+1-555-0002");
+        Student bob = new HonorsStudent("Bob JoHnson", 21, "bob.smith@school.edu", "+1-555-0002");
         studentManager.addStudent(bob);
         addInitialGrades(bob.getStudentId(), 85.2, 6);
 
@@ -278,7 +333,7 @@ try{
         return gradeManager.getGradeCount(studentId);
     }
 
-    private static void recordGrade(){
+    private static void recordGrade() {
         System.out.println("\nRECORD GRADE");
         System.out.println("═══════════════════════════════════════════════════");
         System.out.println();
@@ -294,68 +349,68 @@ try{
 
             System.out.println("\nStudent Found:");
             student.displayStudentDetails();
-        System.out.println("───────────────────────────────────────────────────");
+            System.out.println("───────────────────────────────────────────────────");
 
-        Subject subject = null;
-
-        System.out.println("""
-                Subject Type:
-                1. Core Subject (Mathematics, English, Science)
-                2. Elective Subject (Music, Art, Physical Education)
-                """);
-
-        System.out.print("Select type (1-2): ");
-        int type = getIntInput();
-
-        if (type == 1) {
-            System.out.println("""
-                    Available Core Subjects:
-                    1. Mathematics
-                    2. English
-                    3. Science
-                    """);
-
-            System.out.print("Select subject (1-3): ");
-            int s = getIntInput();
-
-            switch (s) {
-                case 1 -> subject = new CoreSubject("Mathematics", "MATH101");
-                case 2 -> subject = new CoreSubject("English", "ENG101");
-                case 3 -> subject = new CoreSubject("Science", "SCI101");
-                default -> {
-                    System.out.println("❌ Invalid choice!");
-                    return;
-                }
-            }
-
-        } else if (type == 2) {
+            Subject subject = null;
 
             System.out.println("""
-                    Available Elective Subjects:
-                    1. Music
-                    2. Art
-                    3. Physical Education
+                    Subject Type:
+                    1. Core Subject (Mathematics, English, Science)
+                    2. Elective Subject (Music, Art, Physical Education)
                     """);
 
-            System.out.print("Select subject (1-3): ");
-            int s = getIntInput();
+            System.out.print("Select type (1-2): ");
+            int type = getIntInput();
 
-            switch (s) {
-                case 1 -> subject = new ElectiveSubject("Music", "MUS101");
-                case 2 -> subject = new ElectiveSubject("Art", "ART101");
-                case 3 -> subject = new ElectiveSubject("Physical Education", "PE101");
-                default -> {
-                    System.out.println("❌ Invalid choice!");
-                    return;
+            if (type == 1) {
+                System.out.println("""
+                        Available Core Subjects:
+                        1. Mathematics
+                        2. English
+                        3. Science
+                        """);
+
+                System.out.print("Select subject (1-3): ");
+                int s = getIntInput();
+
+                switch (s) {
+                    case 1 -> subject = new CoreSubject("Mathematics", "MATH101");
+                    case 2 -> subject = new CoreSubject("English", "ENG101");
+                    case 3 -> subject = new CoreSubject("Science", "SCI101");
+                    default -> {
+                        System.out.println("❌ Invalid choice!");
+                        return;
+                    }
                 }
-            }
-        } else {
-            System.out.println("❌ Invalid type!");
-            return;
-        }
 
-        System.out.print("\nEnter grade (0-100): ");
-        double gradeValue = scanner.nextDouble();
+            } else if (type == 2) {
+
+                System.out.println("""
+                        Available Elective Subjects:
+                        1. Music
+                        2. Art
+                        3. Physical Education
+                        """);
+
+                System.out.print("Select subject (1-3): ");
+                int s = getIntInput();
+
+                switch (s) {
+                    case 1 -> subject = new ElectiveSubject("Music", "MUS101");
+                    case 2 -> subject = new ElectiveSubject("Art", "ART101");
+                    case 3 -> subject = new ElectiveSubject("Physical Education", "PE101");
+                    default -> {
+                        System.out.println("❌ Invalid choice!");
+                        return;
+                    }
+                }
+            } else {
+                System.out.println("❌ Invalid type!");
+                return;
+            }
+
+            System.out.print("\nEnter grade (0-100): ");
+            double gradeValue = scanner.nextDouble();
 
 //        // Validate grade
 //        if (gradeValue < 0 || gradeValue > 100) {
@@ -363,24 +418,24 @@ try{
 //            return;
 //        }
 
-        scanner.nextLine();
+            scanner.nextLine();
 
-        Grade grade = new Grade(studentId, subject, gradeValue);
-        System.out.println("\nGRADE CONFIRMATION");
-        System.out.println("---------------------");
-        System.out.println("GradeID: "+ grade.getGradeId());
-        System.out.println("Student: " + student.getName());
-        System.out.println("Subject: " + subject.getSubjectName());
-        System.out.println("Grade:   " + gradeValue);
+            Grade grade = new Grade(studentId, subject, gradeValue);
+            System.out.println("\nGRADE CONFIRMATION");
+            System.out.println("---------------------");
+            System.out.println("GradeID: " + grade.getGradeId());
+            System.out.println("Student: " + student.getName());
+            System.out.println("Subject: " + subject.getSubjectName());
+            System.out.println("Grade:   " + gradeValue);
 
-        System.out.print("\nSave this grade? (Y/N): ");
-        String confirm = scanner.nextLine();
+            System.out.print("\nSave this grade? (Y/N): ");
+            String confirm = scanner.nextLine();
 
 
-        if (!confirm.trim().equalsIgnoreCase("Y")) {
-            System.out.println("\n Grade cancelled. Nothing saved.");
-            return;
-        }
+            if (!confirm.trim().equalsIgnoreCase("Y")) {
+                System.out.println("\n Grade cancelled. Nothing saved.");
+                return;
+            }
 
             try {
                 gradeManager.addGrade(grade);
@@ -392,10 +447,10 @@ try{
                 return;
             }
 
-        System.out.println("\n✔ Grade saved successfully!");
-           }catch (StudentNotFoundException | InvalidGradeException snf){
+            System.out.println("\n✔ Grade saved successfully!");
+        } catch (StudentNotFoundException | InvalidGradeException snf) {
             LoggerHandler.log("InvalidGradeException — " + snf.getMessage());
-        System.out.println("Error: "+ snf.getMessage());
+            System.out.println("Error: " + snf.getMessage());
         }
 
     }

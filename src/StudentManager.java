@@ -1,5 +1,7 @@
 import Exceptions.StudentNotFoundException;
 
+import java.util.Arrays;
+
 public class StudentManager {
     private Student[] students = new Student[50];
     private int studentCounter = 0;
@@ -10,7 +12,7 @@ public class StudentManager {
             studentCounter++;
         }
         System.out.println("Student added successfully!");
-    } // adds student to array
+    }
 
     public Student findStudent(String studentId) throws StudentNotFoundException {
         for (int i = 0; i < studentCounter; i++) {
@@ -18,14 +20,9 @@ public class StudentManager {
                 return students[i];
             }
         }
-        throw new StudentNotFoundException("Student with Id "+ studentId +" doesn't exist");  // Student not found
+        throw new StudentNotFoundException("Student with Id " + studentId + " doesn't exist");  // Student not found
 
     }// returns Student or null
-
-    public void viewAllStudents() {
-        students[studentCounter].displayStudentDetails();
-    } //displays all students
-
 
 
     public int getStudentCount() {
@@ -54,10 +51,24 @@ public class StudentManager {
                 count++;
             }
         }
-
-        if (count == 0) {return 0;}
-
+        if (count == 0) {
+            return 0;
+        }
         return total / count;
+    }
+    public  Student[] findStudentByName(String name){
+       name= name.toLowerCase();
+        Student[] results = new Student[studentCounter];
+        int count = 0;
+        for (int i = 0; i <studentCounter ; i++) {
+            Student s = students[i];
+            if (s != null) {
+            if (s.getName().toLowerCase().contains(name)){
+              results[count]=s;
+                count++;
+            }}
+        }
+        return Arrays.copyOf(results, count);
     }
 }
 
