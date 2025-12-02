@@ -1,7 +1,10 @@
+import Exceptions.InvalidCSVFormatException;
+import Exceptions.InvalidGradeException;
+
 import java.time.Instant;
 import java.time.LocalDate;
 
-public class Grade implements Gradable {
+public class Grade implements Gradable{
     private static int gradeCounter;
     private String gradeId;
     private String studentId;
@@ -9,18 +12,19 @@ public class Grade implements Gradable {
     private double grade;
     private String date;
 
-    public Grade( String studentId, Subject subject, double grade) {
+    public Grade( String studentId, Subject subject, double grade) throws InvalidGradeException {
         gradeCounter++;
         this.gradeId = "GRD" + String.format("%03d", gradeCounter);
         if (validateGrade(grade)) {
             this.grade = grade;
         } else {
-            System.out.println("invalid grades");
-            this.grade = 0;
+           throw new InvalidGradeException("grade is invalid, try again");
+
         }
         this.studentId = studentId;
         this.subject = subject;
         this.date = LocalDate.now().toString();
+
     }
 
 

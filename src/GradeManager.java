@@ -1,11 +1,15 @@
+import Exceptions.InvalidGradeException;
+
 public class GradeManager {
     private Grade[] grades = new Grade[200];
     private int gradeCount;
 
-    public void addGrade(Grade grade) {
-        if (gradeCount < grades.length) {
+    public void addGrade(Grade grade) throws InvalidGradeException {
+        if (!grade.validateGrade(grade.getGrade())) {
+            throw new InvalidGradeException("Grade must be between 0 and 100.");
+        }
         grades[gradeCount] = grade;
-        gradeCount++;}
+        gradeCount++;
     }
 
     public void viewGradesByStudent(String studentId) {

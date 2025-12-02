@@ -1,3 +1,5 @@
+import Exceptions.StudentNotFoundException;
+
 public class StudentManager {
     private Student[] students = new Student[50];
     private int studentCounter = 0;
@@ -10,13 +12,13 @@ public class StudentManager {
         System.out.println("Student added successfully!");
     } // adds student to array
 
-    public Student findStudent(String studentId) {
+    public Student findStudent(String studentId) throws StudentNotFoundException {
         for (int i = 0; i < studentCounter; i++) {
             if (students[i] != null && students[i].getStudentId().equals(studentId)) {
                 return students[i];
             }
         }
-        return null;  // Student not found
+        throw new StudentNotFoundException("Student with Id "+ studentId +" doesn't exist");  // Student not found
 
     }// returns Student or null
 
