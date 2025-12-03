@@ -126,6 +126,25 @@ public class Main {
                 }
 
             case 3:
+                System.out.println("Search by Grade range");
+                System.out.println("Enter the minimum range: ");
+                double minGrade = scanner.nextDouble();
+                System.out.println("Enter the maximum range: ");
+                double maxGrade = scanner.nextDouble();
+                Student [] gradeMatch = studentManager.searchByGradeRange(minGrade, maxGrade,gradeManager);
+                if (gradeMatch.length == 0) {
+                    System.out.println("\n❌ No students in that grade.");
+                    LoggerHandler.log("Search By Grade range — No match for: " + minGrade+" and "+maxGrade);
+                } else {
+                    System.out.println("Search Results: \n");
+                    System.out.println("───────────────────────────────────────────────────────────────");
+                    System.out.printf("%-10s %-20s %-9s %-8s%n", "STU ID", "Name", "TYPE", "AVG");
+
+                    for (Student match : gradeMatch) {
+
+                        System.out.printf("%-10s %-20s %-9s %.2f%n",match.getStudentId(),match.getName(),match.getStudentType(),match.calculateAverageGrade());
+                    }
+                }
                 break;
             case 4:
                 break;
@@ -214,7 +233,7 @@ public class Main {
                 "STU ID", "NAME", "TYPE", "AVG GRADE", "STATUS");
         System.out.println("───────────────────────────────────────────────────────────────────────────");
 
-        // Display each student
+
         for (int i = 0; i < studentManager.getStudentCount(); i++) {
             Student student = studentManager.getStudentByIndex(i);
 
@@ -411,12 +430,6 @@ public class Main {
 
             System.out.print("\nEnter grade (0-100): ");
             double gradeValue = scanner.nextDouble();
-
-//        // Validate grade
-//        if (gradeValue < 0 || gradeValue > 100) {
-//            System.out.println("❌ Invalid grade. Must be between 0 and 100.");
-//            return;
-//        }
 
             scanner.nextLine();
 

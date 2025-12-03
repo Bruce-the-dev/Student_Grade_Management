@@ -70,6 +70,26 @@ public class StudentManager {
         }
         return Arrays.copyOf(results, count);
     }
+    public Student[] searchByGradeRange(double min, double max, GradeManager gradeManager) {
+        Student[] results = new Student[studentCounter];
+        int count = 0;
+
+        for (int i = 0; i < studentCounter; i++) {
+            Student s = students[i];
+
+            if (s == null) continue;
+
+            double avg = gradeManager.calculateOverallAverage(s.getStudentId());
+            if (avg < 0) continue;  // no grades
+
+            if (avg >= min && avg <= max) {
+                results[count++] = s;
+            }
+        }
+
+        return Arrays.copyOf(results, count);
+    }
+
 }
 
 
