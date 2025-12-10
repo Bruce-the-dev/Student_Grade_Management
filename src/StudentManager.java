@@ -90,6 +90,26 @@ public class StudentManager {
         return Arrays.copyOf(results, count);
     }
 
+    public Student[] searchByStudentType(String type) {
+type= type.toLowerCase();
+        int count = 0;
+        Student[] results = new Student[studentCounter];
+        for (int i = 0; i<studentCounter;i++){
+
+            Student s = students[i];
+            if (s == null) continue;
+            if(s.getStudentType().toLowerCase().equals(type)){
+                results[count] = s;
+                count++;
+            }
+        }
+        return Arrays.copyOf(results, count);
+    }
+
+    public Student[] getAllStudents() {
+        return Arrays.copyOf(students, studentCounter);
+    }
+
 }
 
 

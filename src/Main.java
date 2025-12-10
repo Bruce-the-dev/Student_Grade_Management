@@ -1,13 +1,17 @@
+import Exceptions.GpaErrorException;
 import Exceptions.InvalidGradeException;
 import Exceptions.LoggerHandler;
 import Exceptions.StudentNotFoundException;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static StudentManager studentManager = new StudentManager();
     private static GradeManager gradeManager = new GradeManager();
+    private static GpaCalculator gpaCalculator = new GpaCalculator(gradeManager);
+
 
 
     public static void main(String[] args) throws InvalidGradeException, StudentNotFoundException {
@@ -23,11 +27,11 @@ public class Main {
             System.out.println("║   STUDENT GRADE MANAGEMENT - MAIN MENU            ║");
             System.out.println("╚═══════════════════════════════════════════════════╝");
             System.out.println();
-            System.out.println("1. Add Student");
-            System.out.println("2. View Students");
-            System.out.println("3. Record Grade");
-            System.out.println("4. View Grade Report");
             System.out.println("""
+                    1. Add Student
+                    2. View Students
+                    3. Record Grade
+                    4. View Grade Report
                     5. Export Grade Report
                     6. Calculate Student GPA
                     7. Bulk Import Grades
@@ -53,17 +57,27 @@ public class Main {
                     viewGradeReport();
                     break;
                 case 5:
-                    System.out.println("\n Not yet implemented grade Export report!");
+                    exportGradeReport();
                     break;
                 case 6:
-                    System.out.println("\n Not yet implemented Calculated student GPA!");
+                    calculateGPA();
                     break;
                 case 7:
-                    System.out.println("\nNot yet implemented bulk import grades!");
-                    running = false;
+                    System.out.print("Enter CSV file path: ");
+                    scanner.nextLine();
+                    String path = scanner.nextLine();
+
+                    BulkImporter importer = new BulkImporter(studentManager, gradeManager);
+
+                    try {
+                        importer.importGrades(path);
+                    } catch (IOException e) {
+                        System.out.println("Error reading file: " + e.getMessage());
+                    }
                     break;
                 case 8:
-                    System.out.println("\n Not yet implemented view class Statistics!");
+                    ClassStatisticsCalculator stats = new ClassStatisticsCalculator(gradeManager, studentManager);
+                    stats.printClassStatistics();
                     break;
                 case 9:
                     searchStudent();
@@ -79,6 +93,44 @@ public class Main {
 
         scanner.close();
     }
+
+    private static void calculateGPA() {
+        System.out.println("\nCALCULATE GPA");
+        System.out.println("═══════════════════════════════════════════════");
+
+        scanner.nextLine();
+        System.out.print("Enter Student ID: ");
+        String studentId = scanner.nextLine();
+
+        Student student;
+        try {
+            student = studentManager.findStudent(studentId);
+        } catch (StudentNotFoundException snf) {
+            System.out.println("❌ " + snf.getMessage());
+            return;
+        }
+
+        try {
+
+            System.out.println("\nGPA REPORT");
+            System.out.println("---------------------------------------------");
+            System.out.println("Name:         " + student.getName());
+            System.out.println("Student ID:   " + student.getStudentId());
+            gpaCalculator.calculateGPA(studentId);
+            int rank = gpaCalculator.getRankInClass(studentId, studentManager);
+            int total = studentManager.getStudentCount();
+            System.out.println( "Rank: " + rank + " out of " + total);
+
+        } catch (GpaErrorException | StudentNotFoundException snf) {
+            System.out.println("❌ ERROR: " + snf.getMessage());
+            LoggerHandler.log("❌ ERROR Logged: " + snf.getMessage());
+        }catch (Exception e){
+            System.out.println("Error: "+e.getMessage());
+            LoggerHandler.log("Error logged: "+e.getMessage());
+
+        }
+    }
+
 
     private static void searchStudent() throws StudentNotFoundException {
         System.out.println("""
@@ -147,6 +199,38 @@ public class Main {
                 }
                 break;
             case 4:
+                System.out.println("""
+                        Choose a number for the Student Type you are searching for
+                        Types Available to choose from :
+                         1.Regular
+                         2.Honors\s""");
+
+                int choiceType = scanner.nextInt();
+                String studType = "";
+                if (choiceType==1){
+                    studType="Regular";
+                }else if (choiceType==2){
+                    studType="Honors";
+                }else {
+                    System.out.println("\n❌ Wrong choice try again.");
+                    LoggerHandler.log("SearchByStudentType Error — Wrong choice: " + choiceType);
+                }
+
+                Student[] studTypes = studentManager.searchByStudentType(studType);
+                if (studTypes.length == 0) {
+                    System.out.println("\n❌ No students found in that studTypes.");
+                    LoggerHandler.log("SearchByStudentType Error — No match for: " + studType);
+                } else {
+                    System.out.println("Search Results: \n");
+                    System.out.println("───────────────────────────────────────────────────────────────");
+                    System.out.printf("%-10s %-20s %-9s %-8s%n", "STU ID", "Name", "TYPE", "AVG");
+
+                    for (Student s : studTypes) {
+
+                        System.out.printf("%-10s %-20s %-9s %.2f%n",s.getStudentId(),s.getName(),s.getStudentType(),s.calculateAverageGrade());
+                    }
+                }
+
                 break;
             default:
                 System.out.println("invalid choice");
@@ -466,6 +550,46 @@ public class Main {
             System.out.println("Error: " + snf.getMessage());
         }
 
+    }
+    private static void exportGradeReport() {
+
+        System.out.print("Enter Student ID: ");
+        scanner.nextLine();
+        String studentId = scanner.nextLine();
+
+        try {
+            Student student = studentManager.findStudent(studentId);
+            System.out.println("Student: "+ student.getStudentId()+" - "+ student.getName());
+            System.out.println("Type: " +student.getStudentType());
+            System.out.println("Total Grades: " +gradeManager.getGradeCount(studentId));
+            System.out.println("""
+                    Export options:
+                    1. Summary Report (overview only)
+                    2. Detailed Report (all grades)
+                    3. Both
+                    
+                    Select option (1-3):""");
+            int choice= scanner.nextInt();
+            if (choice ==1) {
+
+                System.out.println("Enter filename (without extension): ");
+                String name= scanner.next();
+                StudentReportGenerator generator = new StudentReportGenerator(gradeManager);
+                generator.exportReport(student,name);
+
+                System.out.println("\n✔ Report exported successfully as: " + student.getStudentId() + "_report.txt");
+                generator.displayExportSuccess(name);
+                LoggerHandler.log("Report exported for " + studentId);
+
+            }
+        } catch (StudentNotFoundException e) {
+            System.out.println("❌ " + e.getMessage());
+            LoggerHandler.log("Failed report export — " + e.getMessage());
+
+        } catch (IOException io) {
+            System.out.println("❌ Error writing file: " + io.getMessage());
+            LoggerHandler.log("File IO Error — " + io.getMessage());
+        }
     }
 
 }

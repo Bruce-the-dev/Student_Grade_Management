@@ -1,6 +1,5 @@
 import Exceptions.InvalidGradeException;
 
-import java.util.Arrays;
 
 public class GradeManager {
     private Grade[] grades = new Grade[200];
@@ -98,17 +97,41 @@ else return -1;
         }
         return count;
     }
-    public  Grade[] findStudentByGradeRange(double minGrade, double maxGrade) {
-int count=0;
-        Grade[] results = new Grade[gradeCounter];
 
+
+    /**
+     * Get all grades for a student as an array
+     * @param studentId The student ID
+     * @return Array of Grade objects (or empty array if none found)
+     */
+    public Grade[] getGradesForStudent(String studentId) {
+        int count = 0;
         for (int i = 0; i < gradeCounter; i++) {
-            Grade grade = grades[i];
-            if (grade.getGrade() >= minGrade && grade.getGrade() <= maxGrade) {
-                results[count]=grade;
+            if (grades[i] != null && grades[i].getStudentId().equals(studentId)) {
                 count++;
             }
         }
-        return Arrays.copyOf(results,count);
+
+        Grade[] studentGrades = new Grade[count];
+
+        //newest first
+        int index = 0;
+        for (int i = gradeCounter - 1; i >= 0 && index < count; i--) {
+            if (grades[i] != null && grades[i].getStudentId().equals(studentId)) {
+                studentGrades[index] = grades[i];
+                index++;
+            }
+        }
+
+        return studentGrades;
     }
+    public int getTotalGradeCount() {
+        return gradeCounter;
     }
+
+    public Grade getGradeAt(int index) {
+        return grades[index];
+    }
+
+
+}

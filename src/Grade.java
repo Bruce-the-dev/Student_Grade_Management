@@ -1,7 +1,5 @@
-import Exceptions.InvalidCSVFormatException;
 import Exceptions.InvalidGradeException;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 public class Grade implements Gradable{
@@ -36,16 +34,6 @@ public class Grade implements Gradable{
                 getSubject().getSubjectName(),
                 getSubject().getSubjectType(),
                 getGrade());
-    }
-
-    public String getLetterGrade() {
-        double g = this.grade;
-        if (g >= 90) return "A";
-        if (g >= 80) return "B";
-        if (g >= 70) return "C";
-        if (g >= 60) return "D";
-        return "F";
-
     }
 
     public String getDate() {

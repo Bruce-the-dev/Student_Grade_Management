@@ -1,4 +1,5 @@
-public class HonorsStudent extends Student{
+
+public class HonorsStudent extends Student {
 private double passingGrade=60.0;
 private boolean honorsEligible= true;
 
