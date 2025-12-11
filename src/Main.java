@@ -79,6 +79,7 @@ public class Main {
                     ClassStatisticsCalculator stats = new ClassStatisticsCalculator(gradeManager, studentManager);
                     stats.printClassStatistics();
                     break;
+
                 case 9:
                     searchStudent();
                     break;
