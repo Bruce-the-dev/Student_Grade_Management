@@ -1,7 +1,7 @@
 ---
 # 📘 Student Grade Management System Lab Assignment.
 
-A beginner Java console application that allows teachers to manage students, subjects, and grades using OOP principles such as inheritance, abstraction, polymorphism, interfaces, and composition.
+A comprehensive Java-based student grade management system with advanced features including exception handling, reporting, and bulk imports.
 
 ---
 
@@ -27,11 +27,24 @@ A beginner Java console application that allows teachers to manage students, sub
   * Elective Average
   * Overall Average
 
-### ✔ Menu Navigation
 
-* Simple 5-option menu
-* Input validation
-* Clean console UI
+## Features
+
+- Student Management (Regular and Honors students)
+- Grade Recording and Tracking
+- Grade Report Generation (Summary and Detailed)
+- Bulk CSV Import
+- GPA Calculation
+- Class Statistics
+- Advanced Search Functionality
+
+## Setup Instructions
+
+1. Clone the repository
+2. Ensure Java JDK 8+ is installed
+3. Compile: `javac *.java`
+4. Run: `java Main`
+
 
 ---
 
@@ -64,6 +77,10 @@ A beginner Java console application that allows teachers to manage students, sub
 
 * Loops until exit
 * Handles invalid input
+
+## Testing
+
+Run tests with JUnit 5.
 
 ---
 
