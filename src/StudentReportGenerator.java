@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +12,7 @@ public class StudentReportGenerator {
         this.gradeManager = gradeManager;
     }
 
-    public void exportReport(Student student, String fileName) throws IOException {
+    public void exportReport(Student student,String fileName) throws IOException {
 
         fileName = "src/Reports/"+fileName+".txt";
         try (FileWriter writer = new FileWriter( fileName)) {
@@ -50,7 +49,6 @@ public class StudentReportGenerator {
             writer.write("\nOverall Average: " + String.format("%.2f", avg) + "%\n");
             writer.write("Passing Status : " +
                     (avg >= student.getPassingGrade() ? "Passing" : "Failing") + "\n");
-
         }
     }
     public void displayExportSuccess(String filename) {
