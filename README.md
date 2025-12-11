@@ -99,9 +99,8 @@ A beginner Java console application that allows teachers to manage students, sub
 
 ---
 
-## 📝 Example Output
-
-* will add some screenshots after
+## 📝Screenshots of pull requests
+![screenshot showing merging feature/Exceptionhandling to develop](img.png)
 
 ---
 
