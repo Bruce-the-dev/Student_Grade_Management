@@ -1,0 +1,8 @@
+IMPORT LOG
+------------------------------
+Error: grade is invalid, try again | Line: STU004,Math,Core,200
+
+SUMMARY
+-----------------------------
+Successful imports : 0
+Failed imports     : 1

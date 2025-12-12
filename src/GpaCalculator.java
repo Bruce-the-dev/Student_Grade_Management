@@ -45,34 +45,49 @@ public class GpaCalculator {
         return "F";
     }
 
-    public void calculateGPA(String studentId) throws GpaErrorException {
-        Grade[] grades = null;
-        grades = gradeManager.getGradesForStudent(studentId);
+    // Method to calculate GPA for a student and return it
+    public double calculateGPA(String studentId) throws GpaErrorException {
+        Grade[] grades = gradeManager.getGradesForStudent(studentId);
         if (grades.length == 0) {
             throw new GpaErrorException("The student has no grades");
         }
+
+        double totalGpa = 0;
+        for (Grade g : grades) {
+            totalGpa += convertToGPA(g.getGrade());
+        }
+
+        return totalGpa / grades.length;
+    }
+
+    // Method to display GPA report
+    public void displayGPAReport(String studentId) throws GpaErrorException {
+        Grade[] grades = gradeManager.getGradesForStudent(studentId);
+        if (grades.length == 0) {
+            throw new GpaErrorException("The student has no grades");
+        }
+
         System.out.println("\nGPA REPORT");
         System.out.println("-----------------------------------------------");
         System.out.printf("%-15s | %-7s | %-10s%n", "Subject", "Grade", "GPA Points");
         System.out.println("-----------------------------------------------");
 
-        double totalGpa = 0;
         for (Grade g : grades) {
             double gpa = convertToGPA(g.getGrade());
-            totalGpa += gpa;
-
             System.out.printf("%-15s | %-7s | %.1f (%s)%n",
                     g.getSubject().getSubjectName(),
                     String.format("%.0f%%", g.getGrade()),
                     gpa,
                     getLetterGrade(gpa)
             );
-
         }
-        System.out.println("-------------------------------------------------------------");
-        System.out.printf("GPA: %.2f%n", totalGpa / grades.length);
-        System.out.println("Letter Grade: " + getLetterGrade(totalGpa / grades.length));
 
+        // Use the calculateGPA() method to get the final GPA
+        double finalGpa = calculateGPA(studentId);
+
+        System.out.println("-------------------------------------------------------------");
+        System.out.printf("GPA: %.2f%n", finalGpa);
+        System.out.println("Letter Grade: " + getLetterGrade(finalGpa));
     }
 
     public int getRankInClass(String studentId, StudentManager studentManager)

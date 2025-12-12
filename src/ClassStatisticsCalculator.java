@@ -38,7 +38,7 @@ public class ClassStatisticsCalculator {
 
     }
 
-    private Grade[] getAllGrades() {
+    public Grade[] getAllGrades() {
         ArrayList<Grade> list = new ArrayList<>();
         int total = gradeManager.getTotalGradeCount();
 
@@ -52,7 +52,7 @@ public class ClassStatisticsCalculator {
         return list.toArray(new Grade[0]);
     }
 
-    private void printGradeDistribution(Grade[] grades) {
+    public void printGradeDistribution(Grade[] grades) {
         System.out.println("\nGRADE DISTRIBUTION");
         System.out.println("──────────────────────────────────────────────────────────");
 
@@ -82,7 +82,7 @@ public class ClassStatisticsCalculator {
         }
     }
 
-    private void printStatisticalAnalysis(Grade[] grades) {
+    public void printStatisticalAnalysis(Grade[] grades) {
         System.out.println("\nSTATISTICAL ANALYSIS");
         System.out.println("──────────────────────────────────────────────────────────");
 
@@ -114,7 +114,7 @@ public class ClassStatisticsCalculator {
         System.out.printf("Lowest Grade:       %.0f%% (%s - %s)%n", lowest.getGrade(), lowest.getStudentId(), lowest.getSubject().getSubjectName());
     }
 
-    private void printSubjectPerformance(Grade[] grades) {
+    public void printSubjectPerformance(Grade[] grades) {
         System.out.println("\nSUBJECT PERFORMANCE");
         System.out.println("──────────────────────────────────────────────────────────");
 
@@ -144,7 +144,7 @@ public class ClassStatisticsCalculator {
         printSubjectTypeAverage(subjects, subjectGradeLists, false);
     }
 
-    private void printSubjectTypeAverage(ArrayList<String> subjects, ArrayList<Double>[] subjectGrades, boolean coreType) {
+    public void printSubjectTypeAverage(ArrayList<String> subjects, ArrayList<Double>[] subjectGrades, boolean coreType) {
         String[] core = {"Mathematics", "English", "Science"};
         double sum = 0.0;
         int count = 0;
@@ -165,7 +165,7 @@ public class ClassStatisticsCalculator {
         System.out.printf("%s Subjects Average: %.1f%%%n", coreType ? "Core" : "Elective", overall);
     }
 
-    private void printStudentTypeComparison() {
+    public void printStudentTypeComparison() {
         System.out.println("\nSTUDENT TYPE COMPARISON");
         System.out.println("──────────────────────────────────────────────────────────");
 
@@ -190,17 +190,17 @@ public class ClassStatisticsCalculator {
 
     // ────────────── Statistics Helpers ──────────────
 
-    private double calculateMean(double[] values) {
+    public double calculateMean(double[] values) {
         return Arrays.stream(values).average().orElse(0.0);
     }
 
-    private double calculateMedian(double[] values) {
+    public double calculateMedian(double[] values) {
         Arrays.sort(values);
         int n = values.length;
         return n % 2 == 0 ? (values[n / 2 - 1] + values[n / 2]) / 2.0 : values[n / 2];
     }
 
-    private double calculateMode(double[] values) {
+    public double calculateMode(double[] values) {
         double mode = values[0];
         int maxCount = 1;
 
@@ -218,7 +218,7 @@ public class ClassStatisticsCalculator {
         return mode;
     }
 
-    private double calculateStdDev(double[] values, double mean) {
+    public double calculateStdDev(double[] values, double mean) {
         double sum = 0.0;
         for (double v : values) sum += (v - mean) * (v - mean);
         return Math.sqrt(sum / values.length);

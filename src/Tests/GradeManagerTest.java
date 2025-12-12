@@ -10,13 +10,11 @@ private GradeManager gradeManager;
     void setup() {
         gradeManager = new GradeManager();
     }
+
     private Subject core(String name) {
-        return new CoreSubject(name, name.substring(0,3).toUpperCase() + "101");
+        return new CoreSubject(name, name.toUpperCase() + "101");
     }
 
-    private Subject elective(String name) {
-        return new ElectiveSubject(name, name.substring(0,3).toUpperCase() + "101");
-    }
 
     @Test
     void addValidGrade() throws InvalidGradeException {
@@ -27,19 +25,19 @@ private GradeManager gradeManager;
     }
     @Test
 void addInvalidGrade() throws InvalidGradeException {
-    Grade g = new Grade("STU001", core("Math"), -5);
 
-    Exception ex = assertThrows(InvalidGradeException.class, () -> {
-        gradeManager.addGrade(g);
+        Exception ex = assertThrows(InvalidGradeException.class, () -> {
+            Grade g = new Grade("STU001", core("Math"), -5);
+            gradeManager.addGrade(g);
     });
 
     assertTrue(ex.getMessage().contains("between 0 and 100"));
 }
     @Test
     void testAddGrade_InvalidAbove100() throws InvalidGradeException {
-        Grade g = new Grade("STU001", core("Math"), 150);
 
         Exception ex = assertThrows(InvalidGradeException.class, () -> {
+            Grade g = new Grade("STU001", core("Math"), 150);
             gradeManager.addGrade(g);
         });
 

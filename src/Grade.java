@@ -16,7 +16,7 @@ public class Grade implements Gradable{
         if (validateGrade(grade)) {
             this.grade = grade;
         } else {
-           throw new InvalidGradeException("grade is invalid, try again");
+           throw new InvalidGradeException("grade is invalid, It must be between 0 and 100, try again");
 
         }
         this.studentId = studentId;

@@ -116,7 +116,7 @@ public class Main {
             System.out.println("---------------------------------------------");
             System.out.println("Name:         " + student.getName());
             System.out.println("Student ID:   " + student.getStudentId());
-            gpaCalculator.calculateGPA(studentId);
+            gpaCalculator.displayGPAReport(studentId);
             int rank = gpaCalculator.getRankInClass(studentId, studentManager);
             int total = studentManager.getStudentCount();
             System.out.println( "Rank: " + rank + " out of " + total);
@@ -176,6 +176,7 @@ public class Main {
                     System.out.printf("%-10s %-20s %-9s %.2f%n",s.getStudentId(),s.getName(),s.getStudentType(),s.calculateAverageGrade());
                     }
                 }
+                break;
 
             case 3:
                 System.out.println("Search by Grade range");

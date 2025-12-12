@@ -56,6 +56,11 @@ public class StudentManager {
         }
         return total / count;
     }
+
+    /**
+     * @param name
+     * @return trimmed down array of students with that name
+     */
     public  Student[] findStudentByName(String name){
        name= name.toLowerCase();
         Student[] results = new Student[studentCounter];

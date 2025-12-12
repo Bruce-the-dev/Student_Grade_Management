@@ -49,7 +49,7 @@ public class GradeManager {
             }
         }
         if (count == 0) {
-            return -1;
+            return 0;
         }
         return sum / count;
 
@@ -71,7 +71,7 @@ public class GradeManager {
             }
         }
         if (count == 0) {
-            return -1;
+            return 0;
         }
         return sum / count;
 
@@ -85,7 +85,7 @@ public class GradeManager {
         double electiveAvg= calculateElectiveAverage(studentId);
         return (coreAvg+ electiveAvg)/2;
         }
-else return -1;
+else return 0;
         }
 
     public int getGradeCount(String studentId) {
